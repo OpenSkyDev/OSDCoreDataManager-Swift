@@ -142,3 +142,12 @@ class OSDCoreDataStack: NSObject {
         return success
     }
 }
+
+class OSDManagedObject: NSManagedObject {
+    class func entityName() -> String {
+        return "OSDManagedObject"
+    }
+    class func insertNewObjectInContext(context: NSManagedObjectContext?) -> AnyObject! {
+        return NSEntityDescription.insertNewObjectForEntityForName(self.entityName(), inManagedObjectContext: context)
+    }
+}
