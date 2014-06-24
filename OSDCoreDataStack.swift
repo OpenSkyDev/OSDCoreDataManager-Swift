@@ -143,7 +143,7 @@ class OSDCoreDataStack: NSObject {
     }
 }
 
-class OSDManagedObject: NSManagedObject {
+extension NSManagedObject {
     class func entityName() -> String {
         return "OSDManagedObject"
     }
