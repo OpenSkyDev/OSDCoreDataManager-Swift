@@ -26,7 +26,9 @@ class OSDCoreDataStack: NSObject {
         self.init(path: path, managedObjectModel: nil)
     }
     convenience init(path: String, managedObjectModelName: String) {
-        let bundle = NSBundle.mainBundle()
+        self.init(path: path, managedObjectModelName: managedObjectModelName, bundle: NSBundle.mainBundle())
+    }
+    convenience init(path: String, managedObjectModelName: String, bundle: NSBundle) {
         var URL: NSURL? = bundle.URLForResource(managedObjectModelName, withExtension: "mom")
         if !URL? {
             URL = bundle.URLForResource(managedObjectModelName, withExtension: "momd")
@@ -145,9 +147,18 @@ class OSDCoreDataStack: NSObject {
 
 extension NSManagedObject {
     class func entityName() -> String {
-        return "OSDManagedObject"
+        return "NSManagedObject"
     }
     class func insertNewObjectInContext(context: NSManagedObjectContext?) -> AnyObject! {
         return NSEntityDescription.insertNewObjectForEntityForName(self.entityName(), inManagedObjectContext: context)
+    }
+    class func countInContext(context: NSManagedObjectContext?) -> (Int, NSError?) {
+        let fetch = NSFetchRequest(entityName: entityName())
+        if let ctx = context {
+            var error: NSError? = nil
+            let count = ctx.countForFetchRequest(fetch, error: &error)
+            return (count, error)
+        }
+        return (0, nil)
     }
 }
